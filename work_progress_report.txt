@@ -201,11 +201,11 @@ Important : Try not to use any global variables
 JOB NO.         : 5
 TARGET MEMBER   : ABHILASH
 DATE            : 14:45 26 DEC 2016 IST
-JOB STATUS      : ASSIGNED
-WORK STATUS     : DEVELOPMENT
-END DATE        :
-TIME TAKEN      :
-JOB DESCRIPTION :
+JOB STATUS      : ASSIGNED -> COMPLETED
+WORK STATUS     : TESTED
+END DATE        : 19:00 26 DEC 2016 IST
+TIME TAKEN      : 5 Hours
+JOB DESCRIPTION : 
 
 1. Write a function 
    a) to clear field of a contact.
