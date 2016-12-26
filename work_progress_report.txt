@@ -149,3 +149,49 @@ Important : Try not to use any global variables
             Strictly adhere to variable_naming_convention
 
 #####################################################################################
+
+#####################################################################################
+
+JOB NO.         : 4
+TARGET MEMBER   : ABHISHEK
+DATE            : 14:00 26 DEC 2016 IST
+JOB STATUS      : ASSIGNED
+WORK STATUS     : DEVELOPMENT
+END DATE        :
+TIME TAKEN      :
+JOB DESCRIPTION :
+
+1. Write a function to search if the contact exists using search criteria as phone number. 
+
+2. Write a main program to to test the above function.
+
+Function requirements is as follows :
+
+Function prototype :
+status_t search_contacts_in_list_pnumber(contact_t **head);
+
+Input : 
+Link list
+
+Algorithm :
+1. Create a local buffer of PHONE_NUMBER_SIZE, prompt and read phone number from user
+2. search for ":back" string in input.
+3. If found return from program without searching.
+4. If not found, start searching the contact.
+5. If criteria matches start indexing the view index flag of matched contact till the end of the list.
+6. If criteria does not match through the entire list, return failure. 
+
+Output :
+if criteria matches, update the view index flag of that contact as 1,2,3..
+depending on the sequence of criteria matching.
+return e_success;
+else
+return e_failure;
+
+Documents to refer :
+1. master/documents/variable_naming_coventions/structure.h
+
+Important : Try not to use any global variables
+            Strictly adhere to variable_naming_convention
+
+#####################################################################################
