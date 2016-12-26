@@ -1,0 +1,59 @@
+############################## WORK PROGRESS REPORT #################################
+
+#####################################################################################
+                                [TEMPLATE]
+
+JOB NO.         : Unique id for a job
+TARGET MEMBER   : Name of the team member who has been assigned this job
+DATE            : Job creation date
+JOB  STATUS     : [ASSIGNED/DISCARDED/COMPLETED] can have any of these values.
+WORK STATUS     : [DEVELOPMENT/TESTING/TESTED] can have any of these values.
+END DATE        : Job end date
+TIME TAKEN      : Time in days
+JOB DESCRIPTON  : A brief description of job
+
+NOTE      : Team member who is assigning the job has to fill in all the field except
+            for WORK STATUS. He is not permitted to change WORK STATUS field.
+
+            Target member who has been assigned the job has to fill only WORK STATUS
+            field. He is not permitted to change any other fields.
+
+IMPORTANT : Each team member is requested to execute "git fetch" and "git rebase"
+            command intead of "git pull" each time before accessing this file. 
+
+#####################################################################################
+
+#####################################################################################
+
+JOB NO.         : 1
+TARGET MEMBER   : SHANKAR
+DATE            : 12:00 26 DEC 2016 IST
+JOB STATUS      : ASSIGNED
+WORK STATUS     : DEVELOPMENT
+END DATE        :
+TIME TAKEN      :
+JOB DESCRIPTION :
+
+1. Write a function to copy 'n' number of contacts from address book file to link
+   list.
+
+2. Write a main program to to test the above function.
+
+Function requirements is as follows :
+
+Function prototype :
+status copy_contacts_from_file(FILE *fs, metadata_t metadata, contact_t **head);
+
+Input :
+Address book file
+
+Output :
+Link list with each node as contact.
+
+Documents to refer :
+1. master/documents/variable_naming_coventions/structure.h
+
+Important : Try not to use any global variables
+            Strictly adhere to variable_naming_convention
+
+#####################################################################################
