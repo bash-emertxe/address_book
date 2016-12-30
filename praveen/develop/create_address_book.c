@@ -346,9 +346,10 @@ status_t search_by_last_name(contact_t **head)
     int idx;
 
     printf("Enter the last name\n");
+    reset_field(last_name, LNAME_SIZE); //To empty the garbage value if present
     read_field(last_name, LNAME_SIZE);  //Fuction to take the input
 
-    printf("The last name is %s\n", last_name);
+    printf("Entered Name by the user is %s\n", last_name);
     if(  check_go_back(last_name) == e_success)
     {
         printf("You are going to previous menu\n");
@@ -361,14 +362,24 @@ status_t search_by_last_name(contact_t **head)
 /* Fuction to check GOBACK (:back) condition */
 status_t check_go_back(char *field)
 {
-    int idx = 0;
+    int idx = 0, jdx = 0;
     /*check for ":" in the Entire Field */
-    while( field[idx++] != ':' && idx < LNAME_SIZE);
-    if(field[idx++] == 'b' && field[idx++] == 'a' && field[idx++] == 'c' && field[idx] == 'k' )
+    while(idx < LNAME_SIZE)
     {
-        return e_success;
+        if( field[idx] == ':')
+        {
+            jdx = idx;
+            
+            if(field[++jdx] == 'b' && field[++jdx] == 'a' && field[++jdx] == 'c' && field[++jdx] == 'k' )
+            {
+                printf("Go back\n");
+                return e_success;
+            }
+        }
+        idx++;
     }
     return e_failure;
+
 }
 
 /* Fution to search the string "field" in entire linked list */
@@ -381,13 +392,10 @@ status_t start_search_contact(contact_t **head, char *last_name)
     {
         return;
     }
-
-    while(ptr->link != NULL )
+    //Loop to compare the last name n each contact
+    while(ptr != NULL )
     {
-        printf("last name is %s ", ptr->last_name);
-        printf("checking with %s\n", last_name);
-        ///************Here why it is not entering the if ?????
-        if( ptr->last_name == last_name )
+        if( strcmp(ptr->last_name, last_name) == 0 )    /*Compare the lastname with lastname in the contact */
         {
             ptr->view_index = ++idx;
             
