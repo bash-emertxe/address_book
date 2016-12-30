@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 /* Defines */
 #define FNAME_SIZE 16
@@ -10,6 +11,21 @@
 #define ADDRESS_SIZE 150
 #define GROUP_SIZE 16
 #define NNAME_SIZE 10
+
+/* Typedef of return value */
+typedef enum
+{
+    e_success,
+    e_failure,
+} status_t;
+
+/* Typedef of address book status */
+typedef enum 
+{ 
+    NORMAL = 0,
+    EMPTY = 1,
+    FULL = 2
+} A_B_status_t;
 
 /* Typedef metadata structure */
 typedef struct 
@@ -37,22 +53,13 @@ typedef struct node
     struct node *link;                      /* Link to next contact                                    */
 } contact_t;
 
-/* Typedef of return value */
-typedef enum
-{
-    e_success,
-    e_failure,
-} status_t;
-
-/* Typedef of address book status */
-typedef enum 
-{ 
-    NORMAL = 0,
-    EMPTY = 1,
-    FULL = 2
-} A_B_status_t;
-
 /***********  Function prototypes ********** */
+
+/* Create a link list of contact */
+void create_contact_list(contact_t **head);
+
+/* create a node */
+contact_t *create_node(void);
 
 /* Function to set all bytes of field to zero */
 status_t reset_field(char *field, int size);
@@ -86,11 +93,11 @@ status_t write_metadata_to_file(FILE *fd, metadata_t metadata);
 
 int main(void)
 {
-    contact_t contact;      /* Creating a local contact     */
+    contact_t *head = NULL;      /* Creating a local contact     */
+    contact_t *ptr;      /* Creating a local contact     */
     metadata_t metadata;    /* Creating a local metadata    */
     FILE *fd;               /* File destination             */
     int idx, count;         /* Loop variables               */
-
 
     /* Get input from user */
     printf("Enter no of contacts to input : ");
@@ -107,18 +114,65 @@ int main(void)
     /* write metadata to file */
     write_metadata_to_file(fd, metadata);
 
-    /* Read contacts and write to file */
+    /* create a link list of contacts */
     for (idx = 0; idx < count; idx++)
     {
-        reset_contact(&contact);
-        read_contact(&contact);
-        write_contact_to_file(fd, contact);
+        create_contact_list(&head);
+    }
+
+
+    /* Read contacts and write to file */
+    ptr = head;
+    for (idx = 0; idx < count; idx++)
+    {
+        reset_contact(ptr);
+        read_contact(ptr);
+        write_contact_to_file(fd, *ptr);
+        ptr = ptr->link;
+    }
+
+
+    /* print contacts */
+    ptr = head;
+    for (idx = 0; idx < count; idx++)
+    {
+        print_contact(*ptr);
+        ptr = ptr->link;
     }
 
     /* Close destination file */
     fclose(fd);
 
     return e_success;
+}
+
+/* Create a link list of contact */
+void create_contact_list(contact_t **head)
+{
+    contact_t *ptr = *head;
+
+    if (*head == NULL)
+    {
+        *head = create_node();
+        return;
+    }
+    else
+    {
+        while (ptr->link != NULL)
+        {
+            ptr = ptr->link;
+        }
+        ptr->link = create_node();
+        return;
+    }
+}
+
+/* create a node */
+contact_t *create_node(void)
+{
+    contact_t *new = (contact_t *)malloc(sizeof(contact_t));
+    new->link = NULL;
+    return new;
 }
 
 /* Function to set all bytes of field to zero */
@@ -192,7 +246,7 @@ status_t read_contact(contact_t *contact)
     read_field(contact->title, TITLE_SIZE);
     printf("Enter email address : ");
     read_field(contact->e_mail, EMAIL_SIZE);
-    printf("Enter address        : ");
+    printf("Enter address       : ");
     read_field(contact->address, ADDRESS_SIZE);
     printf("Enter group         : ");
     read_field(contact->group, GROUP_SIZE);
@@ -205,7 +259,7 @@ status_t read_contact(contact_t *contact)
 /* Function to print entire contact */
 status_t print_contact(contact_t contact)
 {
-    printf("First name    : %s\n", contact.first_name);
+    printf("\nFirst name    : %s\n", contact.first_name);
     printf("Last name     : %s\n", contact.last_name);
     printf("Phone number  : %s\n", contact.phone_number);
     printf("Title         : %s\n", contact.title);

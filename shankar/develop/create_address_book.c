@@ -11,6 +11,12 @@
 #define ADDRESS_SIZE 150
 #define GROUP_SIZE 16
 #define NNAME_SIZE 10
+/* Metadata */
+#define MAGIC_STRING_SIZE 5
+#define ADD_BOOK_STATUS_SIZE 4
+#define NO_OF_CONTACTS_SIZE 4
+#define MAX_NO_CONTACTS_SIZE 4
+#define CONTACT_SIZE 4
 
 /* Typedef of return value */
 typedef enum
@@ -88,17 +94,24 @@ status_t print_metadata(metadata_t metadata);
 /* Function to write dummy metadata to file destination */
 status_t write_metadata_to_file(FILE *fd, metadata_t metadata);
 
+/* Function to copy metadata from file */
+status_t copy_metadata_from_file(metadata_t *metadata, FILE *fs);
 
+/* Function to reset metadata structure */
+status_t reset_metadata(metadata_t *metadata);
 
+/* Function to copy contact from file */
+status_t copy_contact_from_file(contact_t *ptr, FILE *fs);
 
 int main(void)
 {
     contact_t *head = NULL;      /* Creating a local contact     */
     contact_t *ptr;      /* Creating a local contact     */
     metadata_t metadata;    /* Creating a local metadata    */
-    FILE *fd;               /* File destination             */
+    FILE *fd, *fs;               /* File destination             */
     int idx, count;         /* Loop variables               */
 
+#if 0
     /* Get input from user */
     printf("Enter no of contacts to input : ");
     scanf("%d", &count);
@@ -131,7 +144,6 @@ int main(void)
         ptr = ptr->link;
     }
 
-
     /* print contacts */
     ptr = head;
     for (idx = 0; idx < count; idx++)
@@ -145,6 +157,43 @@ int main(void)
 
     return e_success;
 }
+
+#endif
+
+fs = fopen("ad1.txt", "r");
+
+reset_metadata(&metadata);
+
+copy_metadata_from_file(&metadata, fs);
+
+for (idx = 0; idx < metadata.no_of_contacts; idx++)
+{
+    create_contact_list(&head);
+}
+
+ptr = head;
+
+for (idx = 0; idx < metadata.no_of_contacts; idx++)
+{
+    reset_contact(ptr);
+    copy_contact_from_file(ptr, fs);
+    ptr = ptr->link;
+}
+
+ /* print contacts */
+    ptr = head;
+    for (idx = 0; idx < metadata.no_of_contacts; idx++)
+    {
+        print_contact(*ptr);
+        ptr = ptr->link;
+    }
+
+    /* Close source file */
+    fclose(fs);
+
+    return e_success;
+}
+
 
 /* Create a link list of contact */
 void create_contact_list(contact_t **head)
@@ -322,3 +371,48 @@ status_t write_metadata_to_file(FILE *fd, metadata_t metadata)
     return e_success;
 }
 
+/* Function to copy contact from file */
+status_t copy_contact_from_file(contact_t *ptr, FILE *fs)
+{
+    fread(ptr->first_name, sizeof(char), FNAME_SIZE, fs);
+    fread(ptr->last_name, sizeof(char), LNAME_SIZE, fs);
+    fread(ptr->phone_number, sizeof(char), PHONE_NUMBER_SIZE, fs);
+    fread(ptr->title, sizeof(char), TITLE_SIZE, fs);
+    fread(ptr->e_mail, sizeof(char), EMAIL_SIZE, fs);
+    fread(ptr->address, sizeof(char), ADDRESS_SIZE, fs);
+    fread(ptr->group, sizeof(char), GROUP_SIZE, fs);
+    fread(ptr->nick_name, sizeof(char), NNAME_SIZE, fs);
+
+    return e_success;
+}
+
+/* Function to copy metadata from file */
+status_t copy_metadata_from_file(metadata_t *metadata, FILE *fs)
+{
+    fread(metadata->magic_string, sizeof(char), MAGIC_STRING_SIZE, fs);
+    fread(&metadata->address_book_status, ADD_BOOK_STATUS_SIZE, 1, fs);
+    fread(&metadata->no_of_contacts, NO_OF_CONTACTS_SIZE, 1, fs);
+    fread(&metadata->max_contacts, MAX_NO_CONTACTS_SIZE, 1, fs);
+    fread(&metadata->contact_size, CONTACT_SIZE, 1, fs);
+
+    return e_success;
+}
+
+/* Function to reset metadata structure */
+status_t reset_metadata(metadata_t *metadata)
+{
+    int i;
+
+    for (i = 0; i < MAGIC_STRING_SIZE; i++)
+    {
+        metadata->magic_string[i] = '\0';
+    }
+
+    metadata->address_book_status = 0;
+    metadata->no_of_contacts = 0;
+    metadata->max_contacts = 0;
+    metadata->contact_size = 0;
+
+    return e_success;
+
+}

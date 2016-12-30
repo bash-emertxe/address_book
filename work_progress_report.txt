@@ -29,10 +29,10 @@ JOB NO.         : 1
 TARGET MEMBER   : SHANKAR
 DATE            : 12:00 26 DEC 2016 IST
 JOB STATUS      : ASSIGNED
-WORK STATUS     : DEVELOPMENT
-END DATE        :
-TIME TAKEN      :
-JOB DESCRIPTION :
+WORK STATUS     : FINISHED
+END DATE        : 29 DEC 2016 IST
+TIME TAKEN      : 3 DAYS
+JOB DESCRIPTION : 
 
 1. Write a function to copy 'n' number of contacts from address book file to link
    list.
