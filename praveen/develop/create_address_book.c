@@ -95,7 +95,19 @@ status_t search_by_last_name(contact_t **head);
 status_t check_go_back(char *field);
 
 /* Fuction to search contact by given name */
-status_t start_search_contact(contact_t **head, char *last_name);
+status_t start_search_contact_last(contact_t **head, char *last_name);
+
+/* Fuction to search contact by name */
+status_t search_by_first_name(contact_t **head);
+
+/* Fution to search the string "field" in entire linked list */
+status_t start_search_contact_first(contact_t **head, char *first_name);
+
+/* Fuction to search contact by phone num */
+status_t search_by_phone_num(contact_t **head);
+
+/* Fution to search the string "field" in entire linked list */
+status_t start_search_contact_phone(contact_t **head, char *phone_num);
 
 int main(void)
 {
@@ -103,7 +115,7 @@ int main(void)
     contact_t *ptr;      /* Creating a local contact     */
     metadata_t metadata;    /* Creating a local metadata    */
     FILE *fd;               /* File destination             */
-    int idx, count;         /* Loop variables               */
+    int idx, count, op;         /* Loop variables               */
 
     /* Get input from user */
     printf("Enter no of contacts to input : ");
@@ -149,10 +161,22 @@ int main(void)
     /*In the view contact user has to specify one field to search the Entire
       list the following code is to search the Entire list throught last name
       */
-    search_by_last_name(&head);
+    puts("");
+    printf("Select the field through which you want to search\n");
+    puts("1.First Name");
+    puts("2. Last Name");
+    puts("3.MOB Number");
+    scanf("%d", &op);
+    switch (op)
+    {
+        case 1: search_by_first_name(&head);
+                break;
+        case 2: search_by_last_name(&head);
+                break;
+        case 3: search_by_phone_num(&head);
+                break;
+    }
     
-
-
 
 
     /* Close destination file */
@@ -342,7 +366,7 @@ status_t search_by_last_name(contact_t **head)
 {
     char *last_name;    //This temp buffer to store the last name
     char ch;
-    last_name = (char *)malloc(sizeof(char) * 16);
+    last_name = (char *)malloc(sizeof(char) * LNAME_SIZE);
     int idx;
 
     printf("Enter the last name\n");
@@ -355,7 +379,7 @@ status_t search_by_last_name(contact_t **head)
         printf("You are going to previous menu\n");
         return e_failure;
     }
-    start_search_contact( head, last_name );    //Fuction to search the contact
+    start_search_contact_last( head, last_name );    //Fuction to search the contact
     
 }
 
@@ -383,7 +407,7 @@ status_t check_go_back(char *field)
 }
 
 /* Fution to search the string "field" in entire linked list */
-status_t start_search_contact(contact_t **head, char *last_name)
+status_t start_search_contact_last(contact_t **head, char *last_name)
 {
     contact_t *ptr = *head;
     int idx = 0;
@@ -396,6 +420,108 @@ status_t start_search_contact(contact_t **head, char *last_name)
     while(ptr != NULL )
     {
         if( strcmp(ptr->last_name, last_name) == 0 )    /*Compare the lastname with lastname in the contact */
+        {
+            ptr->view_index = ++idx;
+            
+        }
+        ptr = ptr->link;
+    }
+    if( idx == 0)
+    {
+        printf("Contact Does Not Exist !!\n");
+        return;
+    }
+
+    printf("The total detected contacts are %d\n", idx);
+}
+
+/* Fuction to search contact by name */
+status_t search_by_first_name(contact_t **head)
+{
+    char *first_name;    //This temp buffer to store the name
+    char ch;
+    first_name = (char *)malloc(sizeof(char) * FNAME_SIZE);
+    int idx;
+
+    printf("Enter the first name\n");
+    reset_field(first_name, FNAME_SIZE); //To empty the garbage value if present
+    read_field(first_name, FNAME_SIZE);  //Fuction to take the input
+
+    printf("Entered Name by the user is %s\n", first_name);
+    if(  check_go_back(first_name) == e_success)
+    {
+        printf("You are going to previous menu\n");
+        return e_failure;
+    }
+    start_search_contact_first( head, first_name );    //Fuction to search the contact
+    
+}
+
+/* Fution to search the string "field" in entire linked list */
+status_t start_search_contact_first(contact_t **head, char *first_name)
+{
+    contact_t *ptr = *head;
+    int idx = 0;
+
+    if( *head ==  NULL )
+    {
+        return;
+    }
+    //Loop to compare the  name n each contact
+    while(ptr != NULL )
+    {
+        if( strcmp(ptr->first_name, first_name) == 0 )    /*Compare the name with name in the contact */ {
+            ptr->view_index = ++idx;
+            
+        }
+        ptr = ptr->link;
+    }
+    if( idx == 0)
+    {
+        printf("Contact Does Not Exist !!\n");
+        return;
+    }
+
+    printf("The total detected contacts are %d\n", idx);
+}
+
+
+/* Fuction to search contact by phone num */
+status_t search_by_phone_num(contact_t **head)
+{
+    char *phone_num;    //This temp buffer to store the phone num
+    char ch;
+    phone_num= (char *)malloc(sizeof(char) * PHONE_NUMBER_SIZE);
+    int idx;
+
+    printf("Enter the phone num\n");
+    reset_field(phone_num, PHONE_NUMBER_SIZE); //To empty the garbage value if present
+    read_field(phone_num, PHONE_NUMBER_SIZE);  //Fuction to take the input
+
+    printf("Entered Name by the user is %s\n", phone_num);
+    if(  check_go_back(phone_num) == e_success)
+    {
+        printf("You are going to previous menu\n");
+        return e_failure;
+    }
+    start_search_contact_phone( head, phone_num );    //Fuction to search the contact
+    
+}
+
+/* Fution to search the string "field" in entire linked list */
+status_t start_search_contact_phone(contact_t **head, char *phone_num)
+{
+    contact_t *ptr = *head;
+    int idx = 0;
+
+    if( *head ==  NULL )
+    {
+        return;
+    }
+    //Loop to compare the phone_num n each contact
+    while(ptr != NULL )
+    {
+        if( strcmp(ptr->phone_number, phone_num) == 0 )    /*Compare phone num with num in the contact */
         {
             ptr->view_index = ++idx;
             
