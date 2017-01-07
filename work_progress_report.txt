@@ -155,7 +155,7 @@ Important : Try not to use any global variables
 JOB NO.         : 4
 TARGET MEMBER   : ABHISHEK
 DATE            : 14:00 26 DEC 2016 IST
-JOB STATUS      : ASSIGNED
+JOB STATUS      : ASSIGNED -> DISCARDED
 WORK STATUS     : DEVELOPMENT
 END DATE        :
 TIME TAKEN      :
